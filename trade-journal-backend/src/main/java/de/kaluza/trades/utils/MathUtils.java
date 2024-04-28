@@ -18,7 +18,7 @@ public class MathUtils {
         return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
     }
 
-    public static double calculatePerformanceInMoney(BuyTradeEntity openBuyTrade, SaveSellTradeRequest request) {
+    public static double calculatePerformanceInMoney(final BuyTradeEntity openBuyTrade, final SaveSellTradeRequest request) {
         return round(
                 request.getShares() *
                         calculatePerformanceInMoney(
@@ -27,16 +27,17 @@ public class MathUtils {
                 2);
     }
 
-    public static double calculatePerformanceInPercent(BuyTradeEntity openBuyTrade, SaveSellTradeRequest request) {
+    static double calculatePerformanceInMoney(final double buyPrice, final double sellPrice) {
+        return sellPrice < buyPrice
+                ? -1 * (buyPrice - sellPrice)
+                : sellPrice - buyPrice;
+    }
+
+    public static double calculatePerformanceInPercent(final BuyTradeEntity openBuyTrade, final SaveSellTradeRequest request) {
         return MathUtils.round(
                 (request.getPrice() < openBuyTrade.getPrice()
                         ? -1 * (1 - (request.getPrice() / openBuyTrade.getPrice()))
                         : (request.getPrice() / openBuyTrade.getPrice()) - 1.0) * 100.0, 2);
     }
 
-    public static double calculatePerformanceInMoney(final double buyPrice, final double sellPrice) {
-        return sellPrice < buyPrice
-                ? -1 * (buyPrice - sellPrice)
-                : sellPrice - buyPrice;
-    }
 }
