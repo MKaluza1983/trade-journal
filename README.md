@@ -21,10 +21,9 @@ Known solutions from other brokers were not informative enough for me, so I trie
 # TODO:
 - Search filter for open / closed trades
 - Buy / Sell Order Toggle
-- Docker Compose -> backend (MacOS error?!)
-- Adjust Formular Styling on top 
+- Adjust Formular Styling on top
 
-# Open issues:
+# Known / open issues:
 - Not responsive
 - No tests
 - TypeScript

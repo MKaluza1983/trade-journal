@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-alpine
+FROM amazoncorretto:21.0.3
 
 RUN mkdir -p /home/service
 
@@ -8,4 +8,4 @@ COPY . .
 
 RUN ./gradlew bootJar --no-daemon
 
-CMD ["java", "-jar", "build/libs/trades-backend-1.0.jar"]
+CMD ["java", "-jar", "build/libs/trade-journal-backend-1.0.jar"]

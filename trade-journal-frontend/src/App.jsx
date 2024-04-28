@@ -16,8 +16,8 @@ const App = () => {
     // BUY / SELL TRADE
     "stockSymbol": "",
     "tradedAt": new Date().toISOString().split('T')[0].replace(/-/g, '-'),
-    "shares": 1.25,
-    "price": 100.5,
+    "shares": 25,
+    "price": 100,
     // GET / SEARCH
     "searchStockSymbol": "",
     "content": []
