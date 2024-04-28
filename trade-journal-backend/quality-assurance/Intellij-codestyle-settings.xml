@@ -1,0 +1,15 @@
+<code_scheme name="Default" version="173">
+    <option name="FORMATTER_TAGS_ENABLED" value="true"/>
+    <JavaCodeStyleSettings>
+        <option name="IMPORT_LAYOUT_TABLE">
+            <value>
+                <package name="" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="javax" withSubpackages="true" static="true"/>
+                <package name="java" withSubpackages="true" static="true"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="true"/>
+            </value>
+        </option>
+    </JavaCodeStyleSettings>
+</code_scheme>

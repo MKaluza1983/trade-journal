@@ -1,0 +1,233 @@
+openapi: 3.0.3
+info:
+  title: Credit API for booking system (Mi-HGS)
+  version: '1.0'
+security:
+  - bearerAuth: [ ]
+
+paths:
+  /trades/buy:
+    post:
+      tags:
+        - Trades
+      operationId: saveBuyTrade
+      parameters:
+        - name: customerId
+          description: The unique customer (TODO move later to JWT)
+          required: true
+          in: header
+          allowEmptyValue: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveBuyTradeRequest'
+      responses:
+        '201':
+          description: Buy trade has been saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveBuyTradeResponse'
+        # TODO ERRORS tradedAt
+  /trades/sell:
+    post:
+      tags:
+        - Trades
+      operationId: saveSellTrade
+      parameters:
+        - name: customerId
+          description: The unique customer (TODO move later to JWT)
+          required: true
+          in: header
+          allowEmptyValue: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveSellTradeRequest'
+      responses:
+        '201':
+          description: Sell trade has been saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveSellTradeResponse'
+        # TODO ERRORS tradedAt / no buy trades left
+  /trades:
+    get:
+      tags:
+        - Trades
+      operationId: getTrades
+      parameters:
+        - name: customerId
+          description: The unique customer (TODO move later to JWT)
+          required: true
+          in: header
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: stockSymbol
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/StockSymbol'
+        - name: isTradeClosed
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: All customer trades
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTradesResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StockSymbol:
+      description: The stock symbol
+      type: string
+      minLength: 1
+      maxLength: 5
+      pattern: '^[A-Z]*$'
+      example: NVDA
+
+    Trade:
+      type: object
+      description: An executed trade of one customer
+      required:
+        - stockSymbol
+        - shares
+        - price
+        - tradedAt
+      properties:
+        stockSymbol:
+          $ref: '#/components/schemas/StockSymbol'
+        shares:
+          description: How many stock shares have been traded?
+          type: number
+          format: double
+          minimum: 0.01
+          example: 2.25
+        price:
+          type: number
+          format: double
+          minimum: 0.01
+          example: 5.50
+        tradedAt:
+          description: When has the trade been made? Future trading dates will be rejected.
+          type: string
+          format: date
+
+    SaveBuyTradeRequest:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+
+    SaveBuyTradeResponse:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    SaveSellTradeRequest:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+
+    SaveSellTradeResponse:
+      type: object
+      required:
+        - sellTrades
+      properties:
+        sellTrades:
+          type: object
+          items:
+            $ref: '#/components/schemas/SellTrade'
+
+    BuyTrade:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+      type: object
+      required:
+        - id
+        - availableShares
+        - isTradeClosed
+        - sellTrades
+      properties:
+        id:
+          type: string
+          format: uuid
+        availableShares:
+          type: number
+          format: double
+        isTradeClosed:
+          type: boolean
+        performanceInMoney:
+          type: number
+          format: double
+        performanceInPercent:
+          type: number
+          format: double
+          minimum: -100
+          maximum: 100
+        tradingDays:
+          type: integer
+        sellTrades:
+          type: object
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/SellTrade'
+
+    SellTrade:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+      type: object
+      required:
+        - id
+        - performanceInMoney
+        - performanceInPercent
+        - tradingDays
+      properties:
+        id:
+          type: string
+          format: uuid
+        performanceInMoney:
+          type: number
+          format: double
+        performanceInPercent:
+          type: number
+          format: double
+          minimum: -100
+          maximum: 100
+        tradingDays:
+          type: integer
+
+    GetTradesResponse:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: object
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/BuyTrade'

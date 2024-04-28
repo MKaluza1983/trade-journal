@@ -1,0 +1,9 @@
+services:
+  frontend:
+    build: trade-journal-frontend
+    ports:
+      - '8080:3000'
+  backend:
+    build: trade-journal-backend
+    ports:
+      - '8080:8080'
