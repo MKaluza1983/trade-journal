@@ -1,7 +1,7 @@
 # trade-journal
 Simple Trade-Journal application:
 - Frontend has been implemented in React
-- Backend has been implementedin  Java / Spring Boot
+- Backend has been implemented in  Java / Spring Boot
 
 # Start
 Build and start frontend and backend:
