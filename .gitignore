@@ -17,12 +17,8 @@ out/
 .vscode/
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
+*/bin
+*/node_modules
 
 # production
 /build
