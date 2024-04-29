@@ -69,7 +69,6 @@ public interface SaveSellTradeMapper extends TradeMapper {
                             .max(LocalDate::compareTo)
                             .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "NO_LAST_TRADE"));
 
-
             openBuyTrade.setTradingDays((int) ChronoUnit.DAYS.between(openBuyTrade.getTradedAt(), lastSellTradedAt));
         }
         return result;

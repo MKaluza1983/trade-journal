@@ -31,6 +31,7 @@ Known solutions from other brokers were not informative enough for me, so I trie
 
 ## Frontend
 - View is not responsive
+-- Use grid instead of table
 - Ugly error handling -> alert
 - Browser console:
 -- Invalid DOM property `novalidate`. Did you mean `noValidate`?
