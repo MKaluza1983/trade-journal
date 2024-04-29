@@ -62,7 +62,6 @@ public class BuyTradeEntity {
     @Column
     private Integer tradingDays;
 
-    @Builder.Default
     @OneToMany(mappedBy = "buyTrade", fetch = FetchType.EAGER)
     @OrderBy("tradedAt DESC")
     private List<SellTradeEntity> sellTrades = new ArrayList<>();
