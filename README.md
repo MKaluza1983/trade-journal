@@ -33,7 +33,9 @@ Known solutions from other brokers were not informative enough for me, so I trie
 - View is not responsive
 - Ugly error handling -> alert
 - Validation is still not perfect (ok - green / error - red fields not working with bootstrap)
-- Add buy / sell trade -> Enter key starts the buy process
+- Add buy / sell trade
+-- Enter key starts the buy process
+-- Enter key shows validation error
 - TypeScript
 - Layout
 -- Komma vs Point - input / output

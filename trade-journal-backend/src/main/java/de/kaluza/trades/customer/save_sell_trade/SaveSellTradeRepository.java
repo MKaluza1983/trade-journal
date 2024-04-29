@@ -21,7 +21,7 @@ public interface SaveSellTradeRepository extends JpaRepository<SellTradeEntity, 
                     AND bo.stockSymbol = :stockSymbol
                     AND bo.isTradeClosed = false
                     AND bo.tradedAt <= :sellTradedAt
-                    ORDER BY bo.tradedAt
+                    ORDER BY bo.tradedAt, bo.createdAt
                     """
     )
     List<BuyTradeEntity> getOpenBuyTrades(
