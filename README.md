@@ -32,6 +32,10 @@ Known solutions from other brokers were not informative enough for me, so I trie
 ## Frontend
 - View is not responsive
 - Ugly error handling -> alert
+- Browser console:
+-- Invalid DOM property `novalidate`. Did you mean `noValidate`?
+-- Warning: A future version of React will block javascript: URLs as a security precaution. Use event handlers inste
+ad if you can. If you need to generate unsafe HTML try using dangerouslySetInnerHTML instead. React was passed "javascript:void(0);".
 - Validation is still not perfect (ok - green / error - red fields not working with bootstrap)
 - Add buy / sell trade
 -- Enter key starts the buy process

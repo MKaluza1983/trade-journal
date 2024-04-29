@@ -23,10 +23,10 @@ const Trade = (props) => {
           </div>
           <div className="col-2">
             <label htmlFor="validatePrice" className="form-label">Preis:</label>
-            <div class="input-group">
+            <div className="input-group">
               <input id="validatePrice" className="form-control text-end" type="number" value={tradeStates.price} onChange={(e) => setTradeState(prevState => ({ ...prevState, price: e.target.value }))} required />
-              <div class="input-group-prepend">
-                <div class="input-group-text">€</div>
+              <div className="input-group-prepend">
+                <div className="input-group-text">€</div>
               </div>
             </div>
           </div>
