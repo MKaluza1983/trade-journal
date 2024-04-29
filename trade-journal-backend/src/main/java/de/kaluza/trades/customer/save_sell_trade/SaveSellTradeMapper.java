@@ -27,9 +27,12 @@ public interface SaveSellTradeMapper extends TradeMapper {
     default SellTradeEntity in(final BuyTradeEntity openBuyTrade, final SaveSellTradeRequest request, final double soldShares) {
         final var result = in(request);
         result.setShares(soldShares);
-        result.setPerformanceInMoney(MathUtils.calculatePerformanceInMoney(openBuyTrade, request));
-        result.setPerformanceInPercent(MathUtils.calculatePerformanceInPercent(openBuyTrade, request));
-        result.setTradingDays((int) ChronoUnit.DAYS.between(openBuyTrade.getTradedAt(), request.getTradedAt()));
+        result.setPerformanceInMoney(
+                MathUtils.calculatePerformanceInMoney(openBuyTrade.getPrice(), request.getPrice(), request.getShares()));
+        result.setPerformanceInPercent(
+                MathUtils.calculatePerformanceInPercent(openBuyTrade.getPrice(), request.getPrice()));
+        result.setTradingDays(
+                (int) ChronoUnit.DAYS.between(openBuyTrade.getTradedAt(), request.getTradedAt()));
 
         // Add relation
         result.setBuyTrade(openBuyTrade);

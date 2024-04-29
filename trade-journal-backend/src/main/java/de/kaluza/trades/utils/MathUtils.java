@@ -1,7 +1,5 @@
 package de.kaluza.trades.utils;
 
-import de.kaluza.generated.model.SaveSellTradeRequest;
-import de.kaluza.trades.domains.BuyTradeEntity;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.experimental.UtilityClass;
@@ -18,12 +16,12 @@ public class MathUtils {
         return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
     }
 
-    public static double calculatePerformanceInMoney(final BuyTradeEntity openBuyTrade, final SaveSellTradeRequest request) {
+    public static double calculatePerformanceInMoney(final double buyPrice, final double sellPrice, final double sellShares) {
         return round(
-                request.getShares() *
+                sellShares *
                         calculatePerformanceInMoney(
-                                openBuyTrade.getPrice(),
-                                request.getPrice()),
+                                buyPrice,
+                                sellPrice),
                 2);
     }
 
@@ -33,11 +31,11 @@ public class MathUtils {
                 : sellPrice - buyPrice;
     }
 
-    public static double calculatePerformanceInPercent(final BuyTradeEntity openBuyTrade, final SaveSellTradeRequest request) {
+    public static double calculatePerformanceInPercent(final double buyPrice, final double sellPrice) {
         return MathUtils.round(
-                (request.getPrice() < openBuyTrade.getPrice()
-                        ? -1 * (1 - (request.getPrice() / openBuyTrade.getPrice()))
-                        : (request.getPrice() / openBuyTrade.getPrice()) - 1.0) * 100.0, 2);
+                (sellPrice < buyPrice
+                        ? -1 * (1 - (sellPrice / buyPrice))
+                        : (sellPrice / buyPrice) - 1.0) * 100.0, 2);
     }
 
 }

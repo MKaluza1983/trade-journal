@@ -55,8 +55,10 @@ ad if you can. If you need to generate unsafe HTML try using dangerouslySetInner
 
 ## Backend
 - Swagger secure via Basic Auth
+- ProblemDetails
 - Persistence
 -- Postgres
 -- Liquibase
+-- TestContainers
 - ControllerAdvice to create own error responses object
 - N:M relation between BuyTrade and SellTrade would be nicer but too complex for a demo

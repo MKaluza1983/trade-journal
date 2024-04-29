@@ -1,6 +1,5 @@
 package de.kaluza.trades.utils;
 
-import de.kaluza.generated.model.SaveSellTradeRequest;
 import de.kaluza.trades.domains.BuyTradeEntity;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,13 +18,13 @@ public class TradeValidationUtils {
         }
     }
 
-    public void validateEnoughShares(final List<BuyTradeEntity> openBuyTrades, final SaveSellTradeRequest request) {
+    public void validateEnoughShares(final List<BuyTradeEntity> openBuyTrades, final double sellShares) {
         final var availableShares =
                 openBuyTrades
                         .stream()
                         .mapToDouble(BuyTradeEntity::getAvailableShares)
                         .sum();
-        if (availableShares < request.getShares()) {
+        if (availableShares < sellShares) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "NOT_ENOUGH_AVAILABLE_SHARES_TO_SELL");
         }
     }

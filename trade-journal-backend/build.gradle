@@ -109,13 +109,11 @@ dependencies {
     itestImplementation 'org.springframework.boot:spring-boot-starter-test'
     itestImplementation 'org.assertj:assertj-core:3.24.2'
     itestImplementation 'org.mockito:mockito-junit-jupiter:5.3.1'
-    itestImplementation 'org.testcontainers:postgresql'
     itestImplementation 'org.projectlombok:lombok'
 
     ctestImplementation 'org.springframework.boot:spring-boot-starter-test'
     ctestImplementation 'org.assertj:assertj-core:3.24.2'
     ctestImplementation 'org.mockito:mockito-junit-jupiter:5.3.1'
-    ctestImplementation 'org.testcontainers:postgresql'
     ctestImplementation 'org.projectlombok:lombok'
 
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-data-jpa'

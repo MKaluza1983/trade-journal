@@ -38,7 +38,7 @@ public class SaveSellTradeService {
                                 request.getTradedAt());
 
         // Business logic
-        tradeValidationUtils.validateEnoughShares(openBuyTrades, request);
+        tradeValidationUtils.validateEnoughShares(openBuyTrades, request.getShares());
         final var sellTrades = reduceShares(openBuyTrades, request);
         final var persistedSellTrades = saveSellTradeRepository.saveAll(sellTrades);
 
