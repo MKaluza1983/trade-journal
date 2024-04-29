@@ -41,7 +41,7 @@ public class SellTradeEntity {
     private double performanceInPercent;
 
     @Column(nullable = false, updatable = false)
-    private long tradingDays;
+    private int tradingDays;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(

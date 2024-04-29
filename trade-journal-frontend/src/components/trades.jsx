@@ -1,29 +1,46 @@
 import React, { } from 'react';
 import BuyTradeElement from './trades/buy-trade-element';
+import './trades.css';
+
 
 const Trades = (props) => {
-    const { callGetTrades, tradeStates, setTradeState, handleKeyPress } = props;
-    
+    const { callGetTrades, tradeStates, setTradeState } = props;
+
     return (
         <>
             <h2>Trades</h2>
-            <table className="table" style={{ whiteSpace: "nowrap" }}>
-                <thead>
+            <table className="Trades table align-middle" style={{ whiteSpace: "nowrap"}}>
+                <thead className="align-middle">
                     <tr>
                         <th scope="col">
-                            <button className="btn btn-md" onClick={callGetTrades}>
+                            <button className="btn btn-md" onClick={() => {callGetTrades(tradeStates.searchStockSymbol, tradeStates.searchIsTradeClosed)}}>
                                 <img src="/assets/img/refresh-icon.png" alt="Refresh" width="25" height="25" />
                             </button>
                         </th>
-                        <th scope="col"><input placeholder='Aktiensymbol' type="text" pattern="[A-Z]{1,5}" value={tradeStates.searchStockSymbol} onChange={(e) => setTradeState(prevState => ({ ...prevState, searchStockSymbol: e.target.value }))} onKeyPress={handleKeyPress}/></th>
+                        <th scope="col">
+                            <input
+                                placeholder='Aktiensymbol'
+                                type="text"
+                                pattern="[A-Z]{1,5}"
+                                className="form-control text-end"
+                                value={tradeStates.searchStockSymbol}
+                                onChange={(e) => {setTradeState(prevState => ({ ...prevState, searchStockSymbol: e.target.value.toUpperCase() })); callGetTrades(e.target.value, tradeStates.searchIsTradeClosed);}} />
+                        </th>
                         <th scope="col">Handelsdatum</th>
                         <th scope="col">Anzahl</th>
                         <th scope="col">Preis</th>
-                        <th scope="col">Verfügbare Anzahl</th>
-                        <th scope="col">Geschlossener Trade</th>
-                        <th scope="col">Performance (&euro;)</th>
-                        <th scope="col">Performance (&#037;)</th>
-                        <th scope="col">Haltedauer (Tagen)</th>
+                        <th scope="col">Gehaltene Anzahl</th>
+                        <th scope="col">Investiertes Kapital</th>
+                        <th scope="col">
+                            <select className="form-select" aria-label="Default select example" onChange={(e) => {setTradeState(prevState => ({ ...prevState, searchIsTradeClosed: e.target.value })); callGetTrades(tradeStates.searchStockSymbol, e.target.value);}}>
+                                <option value="">Alle Trades</option>
+                                <option value="false">Offene</option>
+                                <option value="true">Geschlossene</option>
+                            </select>
+                        </th>
+                        <th scope="col">+ / - (&euro;)</th>
+                        <th scope="col">+ / - (&#037;)</th>
+                        <th scope="col">Haltedauer</th>
                     </tr>
                 </thead>
                 <tbody>

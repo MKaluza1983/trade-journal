@@ -32,7 +32,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SaveBuyTradeResponse'
-        # TODO ERRORS tradedAt
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+               trade-is-in-future:
+                 $ref: '#/components/examples/trade-is-in-future'
+
   /trades/sell:
     post:
       tags:
@@ -59,7 +68,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SaveSellTradeResponse'
-        # TODO ERRORS tradedAt / no buy trades left
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                trade-is-in-future:
+                  $ref: '#/components/examples/trade-is-in-future'
+                not-enough-available-shares-to-sell:
+                  $ref: '#/components/examples/not-enough-available-shares-to-sell'
+
   /trades:
     get:
       tags:
@@ -134,35 +154,6 @@ components:
           type: string
           format: date
 
-    SaveBuyTradeRequest:
-      allOf:
-        - $ref: '#/components/schemas/Trade'
-
-    SaveBuyTradeResponse:
-      allOf:
-        - $ref: '#/components/schemas/Trade'
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-          format: uuid
-
-    SaveSellTradeRequest:
-      allOf:
-        - $ref: '#/components/schemas/Trade'
-
-    SaveSellTradeResponse:
-      type: object
-      required:
-        - sellTrades
-      properties:
-        sellTrades:
-          type: object
-          items:
-            $ref: '#/components/schemas/SellTrade'
-
     BuyTrade:
       allOf:
         - $ref: '#/components/schemas/Trade'
@@ -170,7 +161,11 @@ components:
       required:
         - id
         - availableShares
+        - investedCapital
         - isTradeClosed
+        - performanceInMoney
+        - performanceInPercent
+        - tradingDays
         - sellTrades
       properties:
         id:
@@ -179,6 +174,10 @@ components:
         availableShares:
           type: number
           format: double
+        investedCapital:
+          type: number
+          format: double
+          minimum: 0
         isTradeClosed:
           type: boolean
         performanceInMoney:
@@ -221,6 +220,36 @@ components:
         tradingDays:
           type: integer
 
+
+    SaveBuyTradeRequest:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+
+    SaveBuyTradeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BuyTrade'
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    SaveSellTradeRequest:
+      allOf:
+        - $ref: '#/components/schemas/Trade'
+
+    SaveSellTradeResponse:
+      type: object
+      required:
+        - sellTrades
+      properties:
+        sellTrades:
+          type: object
+          items:
+            $ref: '#/components/schemas/SellTrade'
+
     GetTradesResponse:
       type: object
       required:
@@ -231,3 +260,23 @@ components:
           minItems: 0
           items:
             $ref: '#/components/schemas/BuyTrade'
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+      properties:
+        errorCode:
+          type: string
+          example: TRADE_IS_IN_FUTURE
+
+  examples:
+    trade-is-in-future:
+      value: {
+         "errorCode" : "TRADE_IS_IN_FUTURE"
+      }
+
+    not-enough-available-shares-to-sell:
+      value: {
+        "errorCode" : "NOT_ENOUGH_AVAILABLE_SHARES_TO_SELL"
+      }

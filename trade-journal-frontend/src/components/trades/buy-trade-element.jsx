@@ -17,16 +17,17 @@ const BuyTradeElement = (props) => {
     return (
         <>
             <tr>
-                <td><img src="/assets/img/buy-trade-icon.png" alt="+" /></td>
+                <th scope="row"><img src="/assets/img/buy-trade-icon.png" alt="+" /></th>
                 <td>{buyTrade.stockSymbol}</td>
                 <td>{formatDate(buyTrade.tradedAt)}</td>
                 <td>{buyTrade.shares}</td>
                 <td>{buyTrade.price} &euro;</td>
                 <td>{buyTrade.availableShares}</td>
-                <td>{buyTrade.isTradeClosed ? "Ja" : "Nein"}</td>
+                <td>{buyTrade.investedCapital + " €"}</td>
+                <td>{buyTrade.isTradeClosed ? "Geschlossen" : "Offen"}</td>
                 <td className={0 <= buyTrade.performanceInMoney ? 'text-success' : 'text-danger'}>{buyTrade.performanceInMoney == null ? "" : buyTrade.performanceInMoney + " €"}</td>
                 <td className={0 <= buyTrade.performanceInPercent ? 'text-success' : 'text-danger'}>{buyTrade.performanceInPercent == null ? "" : buyTrade.performanceInPercent + " %"}</td>
-                <td>{buyTrade.tradingDays}</td>
+                <td>{buyTrade.tradingDays + (buyTrade.tradingDays == 1 ? ' Tag' : ' Tage')}</td>
             </tr>
             {buyTrade.sellTrades.map(sellTrade => <SellTradeElement key={sellTrade.id} buyTradePrice={buyTrade.price} sellTrade={sellTrade} formatDate={formatDate} />)}
         </>

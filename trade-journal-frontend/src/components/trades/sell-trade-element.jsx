@@ -5,17 +5,18 @@ const SellTradeElement = (props) => {
 
     return (
         <>
-            <tr>
-                <td><img src="/assets/img/sell-trade-icon.png" alt="-" /></td>
+            <tr className="table-light">
+                <th scope="row"><img src="/assets/img/sell-trade-icon.png" alt="-" /></th>
                 <td></td>
                 <td>{formatDate(sellTrade.tradedAt)}</td>
                 <td>{sellTrade.shares}</td>
                 <td>{sellTrade.price + " €"}</td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td className={0 <= sellTrade.performanceInMoney ? 'text-success' : 'text-danger'}>{sellTrade.performanceInMoney + " €"}</td>
                 <td className={0 <= sellTrade.performanceInPercent ? 'text-success' : 'text-danger'}>{sellTrade.performanceInPercent + " %"}</td>
-                <td>{sellTrade.tradingDays}</td>
+                <td>{sellTrade.tradingDays + (sellTrade.tradingDays == 1 ? ' Tag' : ' Tage')}</td>
             </tr>
         </>
     )

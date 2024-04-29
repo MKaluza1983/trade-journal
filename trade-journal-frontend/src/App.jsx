@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './components/navbar'
 import Trade from './components/trade'
 import Trades from './components/trades'
-import './App.css';
 
 
 const App = () => {
@@ -16,17 +15,48 @@ const App = () => {
     // BUY / SELL TRADE
     "stockSymbol": "",
     "tradedAt": new Date().toISOString().split('T')[0].replace(/-/g, '-'),
-    "shares": 25,
-    "price": 100,
+    "shares": "",
+    "price": "",
     // GET / SEARCH
     "searchStockSymbol": "",
+    "searchIsTradeClosed": "",
     "content": []
   });
 
-  const callGetTrades = () => {
-    const queryParam = state.searchStockSymbol === "" ? "" : "?stockSymbol=" + state.searchStockSymbol;
+  //TODO / IDEA separate file
+  const handleErrorCode = (errorCode) => {
+    switch (errorCode) {
+      case "TRADE_IS_IN_FUTURE":
+        return "Trade liegt in der Zukunft";
+      case "NOT_ENOUGH_AVAILABLE_SHARES_TO_SELL":
+        return "Nicht genügend Anteile zum Verkauf vorhanden";
+    }
+    return errorCode;
+  }
 
-    fetch(backendUrl + '/trades' + queryParam, {
+  const handleError = (response) => {
+    response.clone().json().then(errorBody => {
+      if (errorBody.errorCode !== undefined) {
+        alert(handleErrorCode(errorBody.errorCode));
+      } else {
+        console.log("Ungültige Dateneingabe");
+      }
+    });
+  }
+
+  const resetTradeForm = () => {
+    setState(prevState => ({ ...prevState, stockSymbol: "" }));
+    setState(prevState => ({ ...prevState, tradedAt: new Date().toISOString().split('T')[0].replace(/-/g, '-') }));
+    setState(prevState => ({ ...prevState, shares: "" }));
+    setState(prevState => ({ ...prevState, price: "" }));
+  }
+
+  const callGetTrades = (searchStockSymbol, searchIsTradeClosed) => {
+    const searchStockSymbolParam = searchStockSymbol === "" ? "" : "stockSymbol=" + searchStockSymbol.toUpperCase();
+    const searchIsTradeClosedParam = "isTradeClosed=" + searchIsTradeClosed;
+    const queryParam = searchStockSymbolParam + "&" + searchIsTradeClosedParam;
+
+    fetch(backendUrl + '/trades?' + queryParam, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -35,6 +65,7 @@ const App = () => {
     })
       .then(response => {
         if (!response.ok) {
+          handleError(response);
           throw new Error('Network response was not ok');
         }
         return response.json();
@@ -67,13 +98,15 @@ const App = () => {
     })
       .then(response => {
         if (!response.ok) {
+          handleError(response);          
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
       .then(data => {
         console.log('POST /trades/buy - OK:', data);
-        callGetTrades();
+        resetTradeForm();
+        callGetTrades(state.searchStockSymbol, state.searchIsTradeClosed);
       })
       .catch(error => {
         console.error('POST /trades/buy - FAILED:', error);
@@ -98,13 +131,15 @@ const App = () => {
     })
       .then(response => {
         if (!response.ok) {
+          handleError(response);
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
       .then(data => {
         console.log('POST /trades/sell - OK:', data);
-        callGetTrades();
+        resetTradeForm();
+        callGetTrades(state.searchStockSymbol, state.searchIsTradeClosed);
       })
       .catch(error => {
         console.error('POST /trades/sell - FAILED:', error);
@@ -113,26 +148,26 @@ const App = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      callGetTrades();
+      callGetTrades(state.searchStockSymbol, state.searchIsTradeClosed);
     }
   };
 
   useEffect(() => {
-    callGetTrades();
+    callGetTrades(state.searchStockSymbol, state.searchIsTradeClosed);
     // eslint-disable-next-line
   }, []);
 
-
   return (
-    <div className="App container">
+    <div className="container text-center">
       <Navbar />
-      <div className="col-md-12">
+      <div>
         <label htmlFor="validateCustomerId" className="form-label">Eingeloggte KundenNr. (<b>für Tests mit Enter ändern</b>)</label>
         <br />
         <input
           id="validateCustomerId"
           required
           type="text"
+          className=" text-end"
           value={state.customerId}
           onChange={(e) => { setState(prevState => ({ ...prevState, customerId: e.target.value }))}}
           onKeyPress={handleKeyPress} />
@@ -140,7 +175,7 @@ const App = () => {
       <br />
       <Trade tradeStates={state} setTradeState={setState} callSaveBuyTrade={callSaveBuyTrade} callSaveSellTrade={callSaveSellTrade} />
       <br />
-      <Trades tradeStates={state} setTradeState={setState} callGetTrades={callGetTrades} handleKeyPress={handleKeyPress}/>
+      <Trades tradeStates={state} setTradeState={setState} callGetTrades={callGetTrades}/>
     </div>
   );
 

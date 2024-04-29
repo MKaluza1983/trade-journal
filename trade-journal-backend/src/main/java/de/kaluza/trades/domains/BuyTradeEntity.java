@@ -51,18 +51,22 @@ public class BuyTradeEntity {
     private double availableShares;
 
     @Column(nullable = false)
+    private double investedCapital;
+
+    @Column(nullable = false)
     private boolean isTradeClosed;
 
-    @Column
+    @Column(nullable = false)
     private Double performanceInMoney;
 
-    @Column
+    @Column(nullable = false)
     private Double performanceInPercent;
 
     @Column
-    private Long tradingDays;
+    private Integer tradingDays;
 
     @OneToMany(mappedBy = "buyTrade", fetch = FetchType.EAGER)
+    @OrderBy("tradedAt DESC")
     private List<SellTradeEntity> sellTrades = new ArrayList<>();
 
     @PrePersist
