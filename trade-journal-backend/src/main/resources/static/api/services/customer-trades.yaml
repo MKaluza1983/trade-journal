@@ -123,8 +123,8 @@ components:
       description: The stock symbol
       type: string
       minLength: 1
-      maxLength: 5
-      pattern: '^[A-Z]*$'
+      maxLength: 6
+      pattern: '^[A-Z0-9]{1,6}$'
       example: NVDA
 
     Trade:
@@ -146,7 +146,7 @@ components:
           example: 2.25
         price:
           type: number
-          format: double
+          format: currency
           minimum: 0.01
           example: 5.50
         tradedAt:

@@ -21,7 +21,7 @@ const Trades = (props) => {
                             <input
                                 placeholder='Aktiensymbol'
                                 type="text"
-                                pattern="[A-Z]{1,5}"
+                                pattern="^[A-Z0-9]{1,6}$"
                                 className="form-control text-end"
                                 value={tradeStates.searchStockSymbol}
                                 onChange={(e) => {setTradeState(prevState => ({ ...prevState, searchStockSymbol: e.target.value.toUpperCase() })); callGetTrades(e.target.value, tradeStates.searchIsTradeClosed);}} />

@@ -28,9 +28,9 @@ public interface SaveSellTradeMapper extends TradeMapper {
         final var result = in(request);
         result.setShares(soldShares);
         result.setPerformanceInMoney(
-                MathUtils.calculatePerformanceInMoney(openBuyTrade.getPrice(), request.getPrice(), request.getShares()));
+                MathUtils.calculatePerformanceInMoney(openBuyTrade.getPrice(), request.getPrice().doubleValue(), request.getShares()));
         result.setPerformanceInPercent(
-                MathUtils.calculatePerformanceInPercent(openBuyTrade.getPrice(), request.getPrice()));
+                MathUtils.calculatePerformanceInPercent(openBuyTrade.getPrice(), request.getPrice().doubleValue()));
         result.setTradingDays(
                 (int) ChronoUnit.DAYS.between(openBuyTrade.getTradedAt(), request.getTradedAt()));
 

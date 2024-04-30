@@ -45,7 +45,7 @@ ad if you can. If you need to generate unsafe HTML try using dangerouslySetInner
 - Layout
     - Euro (X,YZ) - Comma vs Point - input / output
     - Euro (A.BCD,EF) - Thousands 
-    - Euro (A,BCDEF) - Too many digits after comma
+    - Euro (A,BCDEF) - Too many digits after comma -> https://cchanxzy.github.io/react-currency-input-field/
 - Validation
     - Validation failed but call is executed
 - Use Bootstrap components in React

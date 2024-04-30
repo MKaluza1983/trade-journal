@@ -11,7 +11,7 @@ const Trade = (props) => {
         <div className="row">
           <div className="col-2 offset-2">
             <label htmlFor="validateStockSymbol" className="form-label">Aktiensymbol:</label>
-            <input id="validateStockSymbol" className="form-control text-end" type="text" pattern="[A-Z]{1,5}" value={tradeStates.stockSymbol} onChange={(e) => setTradeState(prevState => ({ ...prevState, stockSymbol: e.target.value.toUpperCase() }))} required />
+            <input id="validateStockSymbol" className="form-control text-end" type="text" pattern="^[A-Z0-9]{1,6}$" value={tradeStates.stockSymbol} onChange={(e) => setTradeState(prevState => ({ ...prevState, stockSymbol: e.target.value.toUpperCase() }))} required />
           </div>
           <div className="col-2">
             <label htmlFor="validateTradedAt" className="form-label">Handelsdatum:</label>

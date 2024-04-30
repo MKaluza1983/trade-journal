@@ -23,7 +23,7 @@ public interface SaveBuyTradeMapper extends TradeMapper {
     @Mapping(target = "performanceInMoney", constant = "0")
     @Mapping(target = "performanceInPercent", constant = "0")
     @Mapping(target = "availableShares", source = "input.shares")
-    @Mapping(target = "investedCapital", expression = "java(input.getShares() * input.getPrice())")
+    @Mapping(target = "investedCapital", expression = "java(input.getShares() * input.getPrice().doubleValue())")
     @Mapping(target = "tradeClosed", constant = "false")
     @Mapping(target = "tradingDays", ignore = true)
     @Mapping(target = "sellTrades", ignore = true)
